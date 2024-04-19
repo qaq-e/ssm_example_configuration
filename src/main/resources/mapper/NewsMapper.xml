@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zk.zkssm.dao.NewsDao">
+    <insert id="insertNews" parameterType="news">
+        insert into news(title,category,content,addtime) values(#{title},#{category},#{content},#{addtime})
+    </insert>
+
+    <!--使用自定义结果集类型 -->
+    <resultMap type="news" id="myNews">
+        <!-- property 是 net.biancheng.po.Website 类中的属性 -->
+        <!-- column是查询结果的列名，可以来自不同的表 -->
+        <id property="id" column="id" />
+        <id property="title" column="title" />
+        <id property="category" column="category" />
+        <id property="content" column="content" />
+        <id property="addtime" column="addtime" />
+        <result property="pic" column="pics" />
+        <!-- 一对一级联查询 -->
+        <association property="sorts"
+                     javaType="sorts">
+            <id property="id" column="sid" />
+            <result property="sortName" column="sortName" />
+            <result property="parentId" column="parentId" />
+            <result property="sortPath" column="sortPath" />
+        </association>
+
+    </resultMap>
+
+    <select id="getNews" resultMap="myNews">
+        select n.id,n.title,n.category,n.content,n.addtime,n.pics,s.id sid, s.sortName,s.parentId,s.sortPath from news n, sorts s
+        <where>
+            n.sortid = s.id
+            <if test="title != null and title != ''">
+               and n.title like concat('%',#{title},'%')
+            </if>
+            <if test="category!= null and category != ''">
+                and n.category = #{category}
+            </if>
+        </where>
+    </select>
+
+    <resultMap type="news" id="myNews2">
+        <id property="id" column="id" />
+        <!-- 一对一级联查询 -->
+        <association property="sorts" column="sortid"
+                     javaType="sorts"
+                     select="com.zk.zkssm.dao.SortsDao.getSortsByID" />
+    </resultMap>
+
+    <select id="getNewsAll" resultMap="myNews2">
+        select n.id,n.title,n.category,n.content,n.addtime,n.pics,n.sortid from news n
+        <where>
+            <if test="title != null and title != ''">
+                and n.title like concat('%',#{title},'%')
+            </if>
+            <if test="category!= null and category != ''">
+                and n.category = #{category}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="logImpl" value="LOG4J" />
+        <!--                控制台显示sql执行代码及参数详细等-->
+    </settings>
+    <typeAliases><!--别名-->
+        <package name="com.zk.zkssm.entity"/>
+        <!--        把该包下面的所有的类都定义一个首字符小写的别名-->
+        <!--        比如： Student : student
+                    该别名仅限在 dao对应的xml文件中使用 即 student = com.chcl.chenghuichenglongssm.entity.Student
+        -->
+    </typeAliases>
+    <!-- 配置分页插件 -->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 设置数据库类型 Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库-->
+            <property name="helperDialect" value="mysql"/>
+        </plugin>
+    </plugins>
+</configuration>

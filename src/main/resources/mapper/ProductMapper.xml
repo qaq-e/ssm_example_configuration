@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zk.zkssm.dao.ProductDao">
+<!--    命名控件： Dao 接口的完整路径-->
+<!--    resultType : 返回类型-->
+    <!-- 查询所有网站信息 -->
+    <select id="getAllProduct" resultType="product">
+        select * from product
+    </select>
+</mapper>
